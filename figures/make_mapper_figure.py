@@ -1,7 +1,9 @@
 """Figure: a worked Mapper example on a noisy annulus.
 
-Outputs ``mapper_example.pdf`` and ``mapper_example.png``.
+Outputs ``mapper_example.pdf`` and ``mapper_example.png`` in ``figures/``.
 """
+
+from pathlib import Path
 
 import numpy as np
 import matplotlib
@@ -14,6 +16,9 @@ from spine import cover as cover_mod
 from spine.lens import apply_lens
 from spine.phase0 import phase0, min_cluster_size, _cluster_slab, _reassign_noise
 from spine.topology import betti, normalize_edges
+
+#: Figures are written next to this script, whatever the working directory.
+OUT = Path(__file__).resolve().parent
 
 SEED = 7
 N = 350
@@ -167,8 +172,8 @@ def main():
             ax.spines[side].set_color("#D4D7DC")
 
     fig.tight_layout(pad=0.35, w_pad=0.7)
-    fig.savefig("mapper_example.pdf", bbox_inches="tight")
-    fig.savefig("mapper_example.png", bbox_inches="tight", dpi=320)
+    fig.savefig(OUT / "mapper_example.pdf", bbox_inches="tight")
+    fig.savefig(OUT / "mapper_example.png", bbox_inches="tight", dpi=320)
     print(f"n={N} slabs={len(cover)} placement={placement} "
           f"|V|={len(V)} |E|={len(E)} betti=({b0},{b1}) "
           f"k_per_slab={[s['k'] for s in prov['slabs']]}")

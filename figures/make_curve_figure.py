@@ -15,17 +15,26 @@ Two departures from the campaign figure, both deliberate:
 Full is omitted from the plot, as in the campaign figure.  It is still built,
 scored and present in the CSV.
 
-Outputs ``curve_mean_paper.pdf`` and ``curve_mean_paper.png``.
+Outputs ``curve_mean_paper.pdf`` and ``curve_mean_paper.png`` in ``figures/``.
+
+Reads ``results_curve/curve_mean.csv`` from this repository by default;
+pass another CSV path as the first argument to override it.
 """
 
 import csv
 import statistics as st
+import sys
+from pathlib import Path
 
 import matplotlib
 matplotlib.use("Agg")
 import matplotlib.pyplot as plt
 
-SRC = "/mnt/user-data/uploads/Mapper-Construction-Private/results_curve/curve_mean.csv"
+#: Repository root, so the script runs from any working directory.
+ROOT = Path(__file__).resolve().parents[1]
+SRC = ROOT / "results_curve" / "curve_mean.csv"
+#: Figures are written next to this script, whatever the working directory.
+OUT = Path(__file__).resolve().parent
 
 BLUE, VERM = "#0072B2", "#D55E00"
 INK, MID, LIGHT = "#3F3F46", "#6B7280", "#9AA1AA"
@@ -59,8 +68,8 @@ def load(path=SRC):
     return fracs, curves
 
 
-def main():
-    fracs, curves = load()
+def main(path=SRC):
+    fracs, curves = load(path)
     x = range(len(fracs))
 
     plt.rcParams.update({
@@ -98,8 +107,8 @@ def main():
               handlelength=2.6, columnspacing=1.4, labelspacing=0.35)
 
     fig.tight_layout(pad=0.3)
-    fig.savefig("curve_mean_paper.pdf", bbox_inches="tight")
-    fig.savefig("curve_mean_paper.png", bbox_inches="tight", dpi=320)
+    fig.savefig(OUT / "curve_mean_paper.pdf", bbox_inches="tight")
+    fig.savefig(OUT / "curve_mean_paper.png", bbox_inches="tight", dpi=320)
 
     print("fractions:", fracs)
     for label, *_ in SERIES:
@@ -109,4 +118,4 @@ def main():
 
 
 if __name__ == "__main__":
-    main()
+    main(*sys.argv[1:2])

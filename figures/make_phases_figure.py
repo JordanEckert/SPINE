@@ -3,10 +3,11 @@
 Class 0 is a noisy ring, class 1 a blob at its centre, so class 0's nerve
 carries a 1-cycle and the figure shows that cycle surviving every phase.
 
-Outputs ``spine_phases.pdf`` and ``spine_phases.png``.
+Outputs ``spine_phases.pdf`` and ``spine_phases.png`` in ``figures/``.
 """
 
 import sys
+from pathlib import Path
 
 import numpy as np
 import matplotlib
@@ -19,6 +20,9 @@ from sklearn.preprocessing import StandardScaler
 import spine.model as model_mod
 from spine.model import SPINE, SkeletonClassifier
 from spine.topology import betti
+
+#: Figures are written next to this script, whatever the working directory.
+OUT = Path(__file__).resolve().parent
 
 SEED = 3
 N_RING, N_BLOB = 400, 200
@@ -224,8 +228,8 @@ def main(which="ring"):
                fontsize=7, bbox_to_anchor=(0.5, -0.015))
 
     fig.tight_layout(pad=0.4, w_pad=1.1, h_pad=2.6, rect=(0, 0.045, 1, 1))
-    fig.savefig(stem + ".pdf", bbox_inches="tight")
-    fig.savefig(stem + ".png", bbox_inches="tight", dpi=320)
+    fig.savefig(OUT / (stem + ".pdf"), bbox_inches="tight")
+    fig.savefig(OUT / (stem + ".png"), bbox_inches="tight", dpi=320)
 
     print("budget", BUDGET, "emitted", len(Xp))
     print("per-class vertices", [len(V) for V, _ in sk_final])

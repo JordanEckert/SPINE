@@ -17,18 +17,26 @@ Two panels:
 Colour marks SPINE and GLVQ, the two methods being compared; every other
 method is grey.
 
-Outputs ``timing_paper.pdf`` and ``timing_paper.png``.
+Outputs ``timing_paper.pdf`` and ``timing_paper.png`` in ``figures/``.
+
+Reads ``results_computational/timing_mean.csv`` from this repository by default;
+pass another CSV path as the first argument to override it.
 """
 
 import csv
 import collections
+import sys
+from pathlib import Path
 
 import matplotlib
 matplotlib.use("Agg")
 import matplotlib.pyplot as plt
 
-SRC = ("/mnt/user-data/uploads/Mapper-Construction-Private/"
-       "results_computational/timing_mean.csv")
+#: Repository root, so the script runs from any working directory.
+ROOT = Path(__file__).resolve().parents[1]
+SRC = ROOT / "results_computational" / "timing_mean.csv"
+#: Figures are written next to this script, whatever the working directory.
+OUT = Path(__file__).resolve().parent
 
 BLUE, VERM, GRN = "#0072B2", "#D55E00", "#009E73"
 PURP, ORNG = "#CC79A7", "#E69F00"   # the other two methods Table 4 reports
@@ -60,8 +68,8 @@ def load(path=SRC):
     return t, n
 
 
-def main():
-    t, n = load()
+def main(path=SRC):
+    t, n = load(path)
     datasets = sorted(n, key=lambda d: (n[d], d))   # stable at the Ring/Twonorm tie
 
     plt.rcParams.update({
@@ -136,8 +144,8 @@ def main():
             a.spines[side].set_color("#C9CDD3")
 
     fig.tight_layout(pad=0.4, w_pad=1.6)
-    fig.savefig("timing_paper.pdf", bbox_inches="tight")
-    fig.savefig("timing_paper.png", bbox_inches="tight", dpi=320)
+    fig.savefig(OUT / "timing_paper.pdf", bbox_inches="tight")
+    fig.savefig(OUT / "timing_paper.png", bbox_inches="tight", dpi=320)
 
     slower = [d for d in datasets if t["SPINE"][d] > t["GLVQ"][d]]
     ratios = sorted(t["SPINE"][d] / t["GLVQ"][d] for d in datasets)
@@ -148,4 +156,4 @@ def main():
 
 
 if __name__ == "__main__":
-    main()
+    main(*sys.argv[1:2])
