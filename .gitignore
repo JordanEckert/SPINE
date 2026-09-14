@@ -1,0 +1,10 @@
+# raw datasets and results are reproducible artifacts, not sources
+data/*
+
+__pycache__/
+*.pyc
+*.egg-info/
+build/
+dist/
+.venv/
+.pytest_cache/

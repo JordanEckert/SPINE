@@ -1,0 +1,8 @@
+Paired readout ablation on acc_1nn
+contrast = SPINE+Graph - SPINE+1NN (positive favours the skeleton rule)
+17 datasets: 10 favour the graph, 4 favour the points, 3 tied (dropped from the test)
+mean delta   = 0.003053
+median delta = 0.000727
+Wilcoxon signed-rank, method=exact: statistic = 25.000000, p-value = 0.0905762
+0 retained differences share a magnitude; the p-value is exact
+significant at alpha=0.05: False

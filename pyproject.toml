@@ -1,0 +1,38 @@
+[build-system]
+requires = ["setuptools>=77"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "spine"
+version = "0.1.0"
+description = "SPINE: Skeletal Prototypes on Iterated Nerve Expansions, with the evaluation harness and comparator baselines used to benchmark it"
+readme = "README.md"
+authors = [{ name = "Jordan Eckert", email = "jordanpeckert@gmail.com" }]
+license = "GPL-3.0-or-later"
+license-files = ["LICENSE", "NOTICE"]
+requires-python = ">=3.10"
+dependencies = [
+    "numpy>=1.24",
+    "networkx>=3.0",
+    "sklvq>=0.1.2",
+    "scipy>=1.10",
+    "scikit-learn>=1.3",
+    "pandas>=2.0",
+    "scikit-posthocs>=0.9",
+    "matplotlib>=3.7",
+]
+
+[project.optional-dependencies]
+# interpret-core ships the SPOTGreedy authors' released routine; three
+# tests in tests/test_spotgreedy_algorithm.py check our implementation
+# against it directly, and skip without it.
+dev = ["pytest>=7", "interpret-core>=0.6"]
+
+[tool.setuptools]
+package-dir = { "" = "src" }
+packages = ["spine", "baselines", "baselines.vendor", "harness"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+pythonpath = ["src", "scripts"]
+norecursedirs = ["build", "*.egg-info", ".venv*"]
